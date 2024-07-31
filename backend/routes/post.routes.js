@@ -8,7 +8,7 @@ const router=express.Router();
 
 router.get("/getAllPosts",protectRoute,getAllPosts)
 router.get("/getLikedPosts/:id",protectRoute,getLikedPosts)
-router.get("/following/:id",protectRoute,getFollowingPosts)
+router.get("/following",protectRoute,getFollowingPosts)
 router.get("/userPosts/:username",protectRoute,getUserPosts)
 router.post("/create", protectRoute, createPost);
 router.post("/like/:id", protectRoute, likeUnlikePost);
