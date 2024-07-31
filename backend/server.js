@@ -18,8 +18,8 @@ cloudinary.config({
 const app=express();
 app.use(cors());
 const PORT=process.env.PORT || 5001;
-app.use(express.json());
-app.use(express.urlencoded({extended:true}));
+app.use(express.json({limit:"5mb"}));//to parse data upto 5mb/ limit must not be large to prevent DoS attacks
+app.use(express.urlencoded({extended:true}));//to parse form data
 app.use(cookieParser());
 
 app.use("/api/auth",authRoute);

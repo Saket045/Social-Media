@@ -12,7 +12,7 @@ const CreatePost = () => {
 	const queryClient=useQueryClient();
 	const imgRef = useRef(null);
 
-	const {mutate:createPost,isPending,isError,error}=useMutation({
+	const {mutate:createPost,isPending,isError}=useMutation({
 		mutationFn:async()=>{
 			try {
 				const response=await fetch("/api/posts/create",{
@@ -93,7 +93,7 @@ const CreatePost = () => {
 					</button>
 				</div>
 				{isError && <div className='text-red-500'>Something went wrong</div>}
-				{error.message}
+				
 			</form>
 		</div>
 	);
