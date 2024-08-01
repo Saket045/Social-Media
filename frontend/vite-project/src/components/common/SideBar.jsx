@@ -24,7 +24,7 @@ const Sidebar = () => {
 			}
 		},
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ["authUser"] });
+			queryClient.invalidateQueries({ queryKey: ["authUser"] });//manually trigger a refetch on authUser key.
 		},
 		onError: () => {
 			toast.error("Logout failed");
