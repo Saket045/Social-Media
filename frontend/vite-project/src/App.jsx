@@ -32,10 +32,10 @@ function App() {
 		},
 		retry:false,
 	})
-	if(isLoading){
+	if(isLoading){//while the query is loading , isLoading is true and spinner will be shown
 		return <div className='h-screen flex justify-center items-center'>
 			<LoadingSpinner size='lg'/>
-		</div>
+		</div>//when query loaded then isLoading is false,
 	}
 	console.log(authUser)
 	return (
