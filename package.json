@@ -5,8 +5,9 @@
   "main": "server.js",
   "type":"module",
   "scripts": {
-   "dev":"nodemon backend/server.js",
-   "start":"node backend/server.js"
+   "dev":" nodemon backend/server.js",
+   "start":" node backend/server.js",
+   "build":"npm install && cd frontend && cd vite-project && npm install && npm run build "
   },
   "author": "",
   "license": "ISC",
