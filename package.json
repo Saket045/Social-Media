@@ -7,7 +7,7 @@
   "scripts": {
    "dev":" nodemon backend/server.js",
    "start":" node backend/server.js",
-   "build":"npm install && cd frontend && cd vite-project && npm install && npm run build "
+   "build":"cd frontend/vite-project && npm install && npm run build"
   },
   "author": "",
   "license": "ISC",
