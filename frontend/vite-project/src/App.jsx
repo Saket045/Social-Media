@@ -21,9 +21,8 @@ function App() {
 			try{
 				const response=await fetch('/api/auth/getme');
 				const data=response.json();
-				if(data.error) return null
 				if(!response.ok)
-					throw new Error(data.message);
+					return null;
 				console.log("authUser is:",data);
 				return data;
 			}

@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
@@ -11,9 +12,10 @@ import { FaArrowLeft } from "react-icons/fa6";
 import { IoCalendarOutline } from "react-icons/io5";
 import { FaLink } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {useQuery } from "@tanstack/react-query";
 import { formatMemberSinceDate } from "../../utils/date";
 import useFollow from '../../hooks/useFollow.jsx'
+import useUpdateUserProfile from "../../hooks/useUpdateUserProfile.jsx";
 
 const ProfilePage = () => {
 	const{data:authUser}=useQuery({queryKey:["authUser"]});
@@ -42,7 +44,7 @@ const ProfilePage = () => {
 			}
 		}
 	})
-	const queryClient=useQueryClient();
+	
 	const isFollowing=authUser?.following.includes(user?._id);
 	const handleImgChange = (e, state) => {
 		const file = e.target.files[0];
@@ -54,35 +56,9 @@ const ProfilePage = () => {
 			};
 			reader.readAsDataURL(file);
 		}
-	};
-	const{mutate:updateProfile,isPending:isUpdatingProfile}=useMutation({
-		mutationFn: async () => {
-			try {
-				const res = await fetch("/api/users/update", {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify({ profileImg,coverImg}),
-				});
-					const data = await res.json();
-				if (!res.ok) throw new Error(data.error || "Failed to update profile");
-				return data;
-			} catch (error) {
-				console.error(error);
-				throw error;
-			}
-		},
-		onSuccess: () => {
-			toast.success("Profile updated successfully");
-            Promise.all([queryClient.invalidateQueries({ queryKey: ["authUser"] }),
-			queryClient.invalidateQueries({ queryKey: ["user"] })])
-			
-		},
-		onError:()=>{
-			toast.error("Failed to update profile");
-		}
-	})
+	};    
+	const {updateProfile,isUpdatingProfile}=useUpdateUserProfile();
+	
 	const isMyProfile = authUser?._id===user?._id;
 useEffect(()=>{
 	refetch();
@@ -163,7 +139,9 @@ useEffect(()=>{
 								{(coverImg || profileImg) && (
 									<button
 										className='btn btn-primary rounded-full btn-sm text-white px-4 ml-2'
-										onClick={() => updateProfile()}
+										onClick={async() =>{ await updateProfile({coverImg,profileImg})
+						                  setCoverImg(null)
+														setProfileImg(null) }}
 									>
 										{isUpdatingProfile ? "Updating..":"Update" }
 									</button>
