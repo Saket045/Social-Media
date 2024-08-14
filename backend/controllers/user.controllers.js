@@ -13,6 +13,10 @@ export const getUserProfile = async (req, res) => {
 		res.status(500).json({ error: error.message });
 	}
 };
+//1 Client will pass username of the clicked user in the url i.e. incoming request for the server.
+//2 We ll store the username of the incominng request and 
+//3 find the user in the database according to it.
+//4 if user found then show
 export const followUnfollowUser=async (req,res)=>{
     try {
 		const { id } = req.params;
@@ -50,6 +54,16 @@ export const followUnfollowUser=async (req,res)=>{
     res.status(500).json({"msg":"Internal Server Error"});
   }// $pull , findByIdAndUpdate , req.user._id
 };
+//1 The user will click on the user and the clicked user's id  will be passed in the url
+//2 now we will get that id from params of incoming request.
+//3 now we will find the user in the database according to this id
+//4 we will also get the current user by using re.user._id object
+//5 now we will check if req.user._id === paramsid then we cannot follow ourselves
+//6 now we will check if currentuser's following array includes the paramsid ,if it does then unfollow
+//7 to unfollow, we will pull currentuser id from followers array of paramsuser and pull paramsuser from following array of current user
+//8 if it does not then follow the user
+//9 to follow push current user in following of paramsuser array and push paramsuser in currentuser following array
+//10 now make a notification object using notification model and set type to follow and from current user and to paramsuser
 export const getSuggestedUsers=async(req,res)=>{
 	try{
         const userId=req.user._id;
@@ -76,6 +90,11 @@ export const getSuggestedUsers=async(req,res)=>{
 		res.status(500).json({"msg":"Internal Server Error"});
 	}
 }
+//1 get user id of the current  user by req,user object
+//2 get all the users that the current user is following
+//3 now get a number of random users after filtering out the current user from the User model
+//4 the filtered users will be the users that the that are not followed by current user
+//5 now slice a number of users for suggestion
 export const updateUser = async (req, res) => {
 	const { fullname, email, username, currentPassword, newPassword, bio, link } = req.body;
 	let { profileImg, coverImg } = req.body;
@@ -139,3 +158,15 @@ export const updateUser = async (req, res) => {
 		res.status(500).json({ error: error.message });
 	}
 };
+//0 check if the user is present or not by getting the user from the User model on the basis of req.user._id
+//1 get all the fields from the req.body
+//2 check if both current and new password are present
+//3 check if the current password is correct
+//4 now hash the new password using bcrypt
+//5 if profileimg is input then destroy previous image from cloudinary
+//6 upload the profileimg in cloudinary
+//7 set the secure url of the uploaded image to profile image
+//8 if coverimg is input then destroy previous image from cloudinary
+//9 upload the coverimg in cloudinary
+//10 set the secure url of the uploaded image to cover image
+//11 now update the user fiels with update fields, if changed then update other keep it same 

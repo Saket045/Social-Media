@@ -18,7 +18,6 @@ export const createPost = async (req, res) => {
 			const uploadedResponse = await cloudinary.uploader.upload(img);
 			img = uploadedResponse.secure_url;
 		}
-
 		const newPost = new Post({
 			user: userId,
 			text,
@@ -32,23 +31,27 @@ export const createPost = async (req, res) => {
 		console.log("Error in createPost controller: ", error);
 	}
 };
-
+//1 get the the authenticated user from req object
+//2 check if the user exists in the database
+//3 get the text and img
+//4 check if the text and img both are empty
+//5 if got img then upload in cloudinary and get the secure url of the img
+//6 create the post in post model with text and img and id
+//7 save the post
 export const deletePost = async (req, res) => {
 	try {
 		const post = await Post.findById(req.params.id);
 		if (!post) {
 			return res.status(404).json({ error: "Post not found" });
 		}
-
 		if (post.user.toString() !== req.user._id.toString()) {
 			return res.status(401).json({ error: "You are not authorized to delete this post" });
 		}
-
 		if (post.img) {
-			const imgId = post.img.split("/").pop().split(".")[0];
+			const
+			 imgId = post.img.split("/").pop().split(".")[0];
 			await cloudinary.uploader.destroy(imgId);
 		}
-
 		await Post.findByIdAndDelete(req.params.id);
 
 		res.status(200).json({ message: "Post deleted successfully" });
@@ -57,6 +60,11 @@ export const deletePost = async (req, res) => {
 		res.status(500).json({ error: "Internal server error" });
 	}
 };
+//1 get the post from params
+//2 check if the post exists
+//3 check if post.user._id===req.user._id (match the string)
+//4 if img exists then destroy the image from the cloudinary 
+//5 then remove the post from the post model
 
 export const commentOnPost = async (req, res) => {
 	try {
@@ -84,6 +92,15 @@ export const commentOnPost = async (req, res) => {
 		res.status(500).json({ error: "Internal server error" });
 	}
 };
+//0 get the postId by params
+//1 get the authenticated user
+//2 get the text from the req.body
+//3 check if text is there or not
+//4 find the post in the post model according to the postId
+//5 check if post exists
+//6 create the comment on post by userId and text
+//7 push the comment in the post.comments array
+//8 now save the post model
 
 export const likeUnlikePost = async (req, res) => {
 	try {
@@ -102,7 +119,6 @@ export const likeUnlikePost = async (req, res) => {
 			// Unlike post
 			await Post.updateOne({ _id: postId }, { $pull: { likes: userId } });
 			await User.updateOne({ _id: userId }, { $pull: { likedPosts: postId } });
-
 			const updatedLikes = post.likes.filter((id) => id.toString() !== userId.toString());
 			res.status(200).json(updatedLikes);
 		} else {
@@ -126,7 +142,20 @@ export const likeUnlikePost = async (req, res) => {
 		res.status(500).json({ error: "Internal server error" });
 	}
 };
-
+//1 get the authenticated user from the req.user._id
+//2 get the postId from the params
+//3 find the post in the post model using postId
+//4 check i post is present 
+//5 check if post's likes array includes the current userId
+//6 if yes, then update the post by pulling the userId from the post's likes array
+        //  and pull the postId from the likedposts array of the user model.
+		//  now updated likes will be those likes(users) whose id is not equal to userId (filter)
+//7 if no. then push the userId into likes array of post
+        //  push the postId into the likedposts array of user model
+		// save the post model
+		//  update the likes i.e. the post.likes
+        //  create new notification by notification model set from - userId , to- post.user and type - "like"
+		//save the notification
 export const getAllPosts = async (req, res) => {
 	try {
 		const posts = await Post.find()
@@ -150,6 +179,7 @@ export const getAllPosts = async (req, res) => {
 		res.status(500).json({ error: "Internal server error" });
 	}
 };
+//???
 
 export const getLikedPosts = async (req, res) => {
 	const userId = req.params.id;
@@ -173,6 +203,7 @@ export const getLikedPosts = async (req, res) => {
 		res.status(500).json({ error: "Internal server error" });
 	}
 };
+//???
 
 export const getFollowingPosts = async (req, res) => {
 	try {

@@ -12,3 +12,10 @@ export const generateTokenAndSetCookie = (userId, res) => {
 		secure: process.env.NODE_ENV !== "development",
 	});
 };
+//make a token with jwt sign method and 3 arguments,
+//userId-payload ,jwt secret ,expiry-limit
+//send the cookie to client(browser or client-side) as a response
+//set the cookie with max age of 15 days
+//http only to prevent XSS attacks
+//same site="strict" to prevent CSRF attacks
+//secure i.e. https when not in development mode

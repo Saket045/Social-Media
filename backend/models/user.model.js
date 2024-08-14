@@ -61,3 +61,11 @@ const userSchema=mongoose.Schema({
 
 const User=mongoose.model('User',userSchema);
 export default User;
+//username
+//fullname
+//email
+//password
+//array of followers
+//array of users who this user follow
+//various fields
+//array of posts(from post model) that user liked

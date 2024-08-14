@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { MdOutlineMail } from "react-icons/md";
@@ -40,7 +41,7 @@ const SignUpPage = () => {
 		onSuccess: () => {
 			toast.success("Account created successfully");
              console.log("done")
-			queryClient.invalidateQueries({ queryKey: ["authUser"] });
+			queryClient.invalidateQueries({ queryKey: ["authUser"] });//this marks the query as stale i.e. the data can be refetched whenever the query is called and query with authUser key is validated here
 		},
 	});
 
@@ -50,7 +51,7 @@ const SignUpPage = () => {
 	};
 
 	const handleInputChange = (e) => {
-		setFormData({ ...formData, [e.target.name]: e.target.value });
+		setFormData({ ...formData, [e.target.name]: e.target.value });//Updates the property corresponding to the input field’s name with its current value.
 	};
 
 	return (
@@ -79,7 +80,7 @@ const SignUpPage = () => {
 							<input
 								type='text'
 								className='grow '
-								placeholder='Username'
+						 		placeholder='Username'
 								name='username'
 								onChange={handleInputChange}
 								value={formData.username}

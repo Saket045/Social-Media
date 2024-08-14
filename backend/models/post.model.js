@@ -20,6 +20,7 @@ const postSchema = new mongoose.Schema(
 			},
 		],
 		comments: [
+
 			{
 				text: {
 					type: String,
@@ -39,3 +40,8 @@ const postSchema = new mongoose.Schema(
 const Post = mongoose.model("Post", postSchema);
 
 export default Post;
+//user
+//text
+//image
+//array of likes krne wale users
+//arrays of {comment krne wale users aur unke comments}

@@ -73,7 +73,8 @@ const CreatePost = () => {
 							onClick={() => {
 								setImg(null);
 								imgRef.current.value = null;
-							}}
+							}}//The setImg(null) function is called, which clears the image state.
+							//The imgRef.current.value = null line clears the value of the input field, //resetting it.
 						/>
 						<img src={img} className='w-full mx-auto h-72 object-contain rounded' />
 					</div>

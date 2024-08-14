@@ -17,6 +17,10 @@ export const getNotifications = async (req,res) => {
 		res.status(500).json({ error: "Internal Server Error" });
 	}
 };
+//1 get the authenticated user from req object.
+//2 find all notifications in notification model where the to field is equal to the userId.
+//3 now populate them as you replace the from field in each notification i.e. another user to username and profileimg
+//4 update all notifiactions sent to userId and set read to true  
 
 export const deleteNotifications = async (req, res) => {
 	try {
@@ -30,3 +34,5 @@ export const deleteNotifications = async (req, res) => {
 		res.status(500).json({ error: "Internal Server Error" });
 	}
 };
+//1  get the authenticated user from req object.
+//2  delete all noti. where to field is userid

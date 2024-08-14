@@ -43,6 +43,13 @@ export const signup= async(req,res) =>{
     return res.status(500).json({message:error.message})
    }
 }
+//1 get the fields from the req object i.e. incoming request
+//2 check if the account exists by checking username and email....(User.findOne({field to be compared in model}))
+//3 generate salt through bcrypt
+//4 hash the password
+//5 create new user with the fields you got
+//6 if newUser created ,generate token for every unique user i.e. according to newUser._id 
+//7 now save the user
 export const login= async(req,res) =>{
     try{
         const { username, password } = req.body;
@@ -52,7 +59,6 @@ export const login= async(req,res) =>{
 		if (!user || !isPasswordCorrect) {
 			return res.status(400).json({ error: "Invalid username or password" });
 		}
-
 		generateTokenAndSetCookie(user._id, res);
 
 		res.status(200).json({
@@ -70,6 +76,12 @@ export const login= async(req,res) =>{
         return res.status(500).json({message:error.message})
        }
 }
+//1 get the fields from the req object i.e. incoming request
+//2 find the user in the database on the basis of username
+//3 compare the password of req.body with the hashed password of the user found from the database
+//in the previous step using bcrypt.compare method
+//4 if user not found or password not matched then invalid user else generate tojen and set cookie
+
 export const logout= async(req,res) =>{
     try {
 		res.cookie("jwt", "", { maxAge: 0 });
@@ -79,6 +91,8 @@ export const logout= async(req,res) =>{
 		res.status(500).json({ error: "Internal Server Error" });
 	}
 }
+//1 set the cookie named jwt to maxAge 0 and logout happens
+
 export const getMe = async (req, res) => {
 	try {
 		const user = await User.findById(req.user._id).select("-password");
@@ -88,4 +102,7 @@ export const getMe = async (req, res) => {
 		res.status(500).json({ error: "Internal Server Error" });
 	}
 };
+//1 get the user by findById on the basis of userId from incoming request and exclude the password from it.
+
+
 //select , findById , req.user , ?. , clearCookie , _id , User model ka new user . 
